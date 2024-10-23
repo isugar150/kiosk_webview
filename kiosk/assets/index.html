@@ -3,8 +3,21 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script>
+            window.chrome.webview.addEventListener('message', event => {
+                callback(event.data);
+            });
+
+            function callback(value) {
+                document.getElementById('uuid').innerText = value;
+            }
+        </script>
     </head>
     <body>
-        asdfasdfsadfasdf
+        QR코드를 스캔해주세요.
+        <h3 id="uuid"></h3><br/>
+        <a href="./A.html">A로 이동</a><br/>
+        <a href="./B.html">B로 이동</a><br/>
     </body>
 </html>
