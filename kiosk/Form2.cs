@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Security.Policy;
@@ -43,8 +44,14 @@ namespace kiosk
 
             if (webView != null && webView.CoreWebView2 != null)
             {
-                string text = System.IO.File.ReadAllText(@"./assets/index.html");
-                webView.CoreWebView2.NavigateToString(text);
+                //string text = System.IO.File.ReadAllText(@"./assets/index.html");
+                //webView.CoreWebView2.NavigateToString(text);
+                string exePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                string exeFolder = Path.GetDirectoryName(exePath);
+                string websiteFolder = Path.Combine(exeFolder, "assets");
+                webView.CoreWebView2.SetVirtualHostNameToFolderMapping("kiosk", websiteFolder, CoreWebView2HostResourceAccessKind.DenyCors);
+                //webView.CoreWebView2.Navigate("https://kiosk/index.html"); // 가상 호스팅 방식 - 속도 이슈로인해 파일방식으로 변경
+                webView.CoreWebView2.Navigate("file:///" + websiteFolder + "/index.html"); // 파일 방식
             }
 
             serialPort1.PortName = serialPort;
